@@ -31,22 +31,23 @@ function Navbar() {
 
   // Styles for Desktop Links
   const desktopNavClass = (paths: string[]) =>
-    `transition-colors text-sm font-medium hover:text-[var(--text)] ${isActive(paths)
-      ? "text-[var(--accent)] font-semibold"
-      : "text-[var(--text-muted)]"
+    `transition-colors text-sm font-medium hover:text-[var(--text)] ${
+      isActive(paths)
+        ? "text-[var(--accent)] font-semibold"
+        : "text-[var(--text-muted)]"
     }`;
 
   // Styles for Mobile Links
   const mobileNavClass = (paths: string[]) =>
-    `block w-full rounded-md px-4 py-3 text-base font-medium transition-colors ${isActive(paths)
-      ? "bg-[var(--accent)]/10 text-[var(--accent)]"
-      : "text-[var(--text-muted)] hover:bg-[var(--border)]/50 hover:text-[var(--text)]"
+    `block w-full rounded-md px-4 py-3 text-base font-medium transition-colors ${
+      isActive(paths)
+        ? "bg-[var(--accent)]/10 text-[var(--accent)]"
+        : "text-[var(--text-muted)] hover:bg-[var(--border)]/50 hover:text-[var(--text)]"
     }`;
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--surface)]/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
-
         {/* LEFT: Logo & Desktop Links */}
         <div className="flex items-center gap-8">
           <button
@@ -54,7 +55,11 @@ function Navbar() {
             onClick={() => navigate("/dashboard")}
             className="flex items-center gap-3 transition-opacity hover:opacity-80"
           >
-            <img src="/logo.svg?v=2" alt="RoundOne" className="h-8 w-8 rounded-lg" />
+            <img
+              src="/logo.svg?v=2"
+              alt="RoundOne"
+              className="h-8 w-8 rounded-lg"
+            />
             <span className="text-xl font-extrabold tracking-tight text-white">
               RoundOne
             </span>
@@ -66,13 +71,23 @@ function Navbar() {
               <Link to="/dashboard" className={desktopNavClass(["/dashboard"])}>
                 Dashboard
               </Link>
-              <Link to="/resume-upload" className={desktopNavClass(["/resume-upload", "/onboarding", "/interview"])}>
+              <Link
+                to="/resume-upload"
+                className={desktopNavClass([
+                  "/resume-upload",
+                  "/onboarding",
+                  "/interview",
+                ])}
+              >
                 Mock Interview
               </Link>
               <Link to="/ats-check" className={desktopNavClass(["/ats-check"])}>
                 Resume Checker
               </Link>
-              <Link to="/resume-builder" className={desktopNavClass(["/resume-builder"])}>
+              <Link
+                to="/resume-builder"
+                className={desktopNavClass(["/resume-builder"])}
+              >
                 Resume Builder
               </Link>
               <Link to="/learning" className={desktopNavClass(["/learning"])}>
@@ -81,7 +96,7 @@ function Navbar() {
               <Link to="/practice" className={desktopNavClass(["/practice"])}>
                 Practice
               </Link>
-               <Link to="/contact" className={desktopNavClass(["/contact"])}>
+              <Link to="/contact" className={desktopNavClass(["/contact"])}>
                 Contact Us
               </Link>
             </div>
@@ -130,13 +145,33 @@ function Navbar() {
                 <span className="sr-only">Open main menu</span>
                 {isMobileMenuOpen ? (
                   // Close Icon
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 ) : (
                   // Hamburger Icon
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                    />
                   </svg>
                 )}
               </button>
@@ -148,17 +183,42 @@ function Navbar() {
       {/* MOBILE MENU DROPDOWN */}
       {user && isMobileMenuOpen && (
         <div className="border-t border-[var(--border)] bg-[var(--surface)] lg:hidden shadow-2xl absolute w-full">
-
           {/* Links */}
           <div className="space-y-1 px-4 pb-3 pt-3">
-            <Link to="/dashboard" className={mobileNavClass(["/dashboard"])}>Dashboard</Link>
-            <Link to="/resume-upload" className={mobileNavClass(["/resume-upload", "/onboarding", "/interview"])}>Mock Interview</Link>
-            <Link to="/ats-check" className={mobileNavClass(["/ats-check"])}>Resume Checker</Link>
-            <Link to="/resume-builder" className={mobileNavClass(["/resume-builder"])}>Resume Builder</Link>
-            <Link to="/learning" className={mobileNavClass(["/learning"])}>Learning Hub</Link>
-            <Link to="/practice" className={mobileNavClass(["/practice"])}>Practice</Link>
-            <Link to="/contact" className={mobileNavClass(["/contact"])}>Contact Us</Link>
-            <Link to="/about" className={mobileNavClass(["/about"])}>About</Link>
+            <Link to="/dashboard" className={mobileNavClass(["/dashboard"])}>
+              Dashboard
+            </Link>
+            <Link
+              to="/resume-upload"
+              className={mobileNavClass([
+                "/resume-upload",
+                "/onboarding",
+                "/interview",
+              ])}
+            >
+              Mock Interview
+            </Link>
+            <Link to="/ats-check" className={mobileNavClass(["/ats-check"])}>
+              Resume Checker
+            </Link>
+            <Link
+              to="/resume-builder"
+              className={mobileNavClass(["/resume-builder"])}
+            >
+              Resume Builder
+            </Link>
+            <Link to="/learning" className={mobileNavClass(["/learning"])}>
+              Learning Hub
+            </Link>
+            <Link to="/practice" className={mobileNavClass(["/practice"])}>
+              Practice
+            </Link>
+            <Link to="/contact" className={mobileNavClass(["/contact"])}>
+              Contact Us
+            </Link>
+            <Link to="/about" className={mobileNavClass(["/about"])}>
+              About
+            </Link>
           </div>
 
           {/* User Profile & Logout (Mobile) */}
@@ -187,7 +247,6 @@ function Navbar() {
               Log out
             </button>
           </div>
-
         </div>
       )}
     </nav>
