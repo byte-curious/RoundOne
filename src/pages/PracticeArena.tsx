@@ -13,6 +13,7 @@ import {
 } from "@/services/api";
 import { useSTT } from "@/hooks/useSTT";
 import useUserStore from "@/store/authStore";
+import { useNavigate } from "react-router-dom";
 // --- BOILERPLATE CODE TEMPLATES ---
 const BOILERPLATES: Record<string, string> = {
   python:
