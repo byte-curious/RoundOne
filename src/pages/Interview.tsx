@@ -1,12 +1,12 @@
-import { evaluateInterview, submitCode, getCodeResult } from "@/services/api"
+import { evaluateInterview, submitCode } from "@/services/api"
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import useSessionStore from "@/store/sessionStore"
 import type { EvaluateResult } from "@/types/index"
 import CodeEditor from "@/components/CodeEditor"
 import Navbar from "@/components/Navbar"
-import useTTS from "@/hooks/useTTS"
 import { useSTT } from "@/hooks/useSTT"
+import { playQuestionAudio, stopQuestionAudio } from "../utils/audioPlayer"
 
 const BOILERPLATE_CODE: Record<string, string> = {
   cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n\t// your code goes here\n\treturn 0;\n}`,
@@ -34,7 +34,9 @@ function Interview() {
   // DSA spoken approach
   const [spokenApproach, setSpokenApproach] = useState<string>("");
 
-  const { isSpeaking, isLoading, speak, stop } = useTTS()
+  // Cached Audio State
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+  const [isLoadingAudio, setIsLoadingAudio] = useState<boolean>(false);
 
   // STT hook
   const { startRecording, stopRecording, isRecording, isProcessing } = useSTT();
@@ -43,6 +45,7 @@ function Interview() {
   const { hr, technical, dsa, company, addEvaluation } = useSessionStore()
 
   const language = dsa?.language || "";
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://api.roundoneprep.me";
 
   useEffect(() => {
     if (currentRound === "dsa" && language) {
@@ -77,23 +80,49 @@ function Interview() {
     return ""
   }
 
+  // Audio Playback with Cache
+  const handleSpeak = (text: string) => {
+    if (!text) return;
+    setIsLoadingAudio(true);
+    playQuestionAudio(text, backendUrl, {
+      onStart: () => {
+        setIsLoadingAudio(false);
+        setIsSpeaking(true);
+      },
+      onEnd: () => {
+        setIsSpeaking(false);
+        setIsLoadingAudio(false);
+      },
+      onError: (err) => {
+        console.error("Audio error:", err);
+        setIsSpeaking(false);
+        setIsLoadingAudio(false);
+      }
+    });
+  };
+
+  const handleStopAudio = () => {
+    stopQuestionAudio();
+    setIsSpeaking(false);
+    setIsLoadingAudio(false);
+  };
+
+  // Speak question automatically when question changes
   useEffect(() => {
     const questionText = getCurrentQuestion();
     if (questionText && !evaluation) {
-      speak(questionText);
+      handleSpeak(questionText);
     }
     return () => {
-      stop();
+      handleStopAudio();
     };
   }, [currentRound, currentQuestionIndex, hr, technical, dsa, evaluation]);
 
-  // Speech To Text Handlers
   // Speech To Text Handlers (Click to Toggle)
   const handleToggleRecording = async (e: React.MouseEvent) => {
     e.preventDefault();
 
     if (isRecording) {
-      // User clicked to STOP recording
       try {
         const transcript = await stopRecording();
         if (currentRound === "dsa") {
@@ -106,22 +135,23 @@ function Interview() {
         setError("Failed to process audio. Please try typing.");
       }
     } else {
-      // User clicked to START recording
       setError("");
-      stop();
+      // ECHO PREVENTION: Cut off AI voice immediately before recording mic starts
+      handleStopAudio();
       await startRecording();
     }
   };
 
+  // Instant Native Code Execution (No Polling Loop)
   const handleRunCode = async () => {
     setError("");
     setTestResult([]);
 
-    if (!code) {
+    if (!code.trim()) {
       setError("Write Code before running");
       return;
     }
-    if (language === "") {
+    if (!language) {
       setError("Select a language in onboarding");
       return;
     }
@@ -134,36 +164,19 @@ function Interview() {
         expectedOutput: ex.output
       }));
 
+      // Direct execution response
       const submitResponse = await submitCode({ language, code, testCases });
 
-      if (submitResponse.status !== 202) {
-        setError("Code Submission Failed");
-        setIsRunning(false);
-        return;
-      }
-
-      const submissionId = submitResponse.data.submissionId;
-      let isComplete = false;
-
-      while (!isComplete) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        const pollResponse = await getCodeResult(submissionId);
-        const { status, result, error: pollError } = pollResponse.data;
-
-        if (status === "completed") {
-          const results = Array.isArray(result?.result?.results) ? result.result.results : [];
-          setTestResult(results);
-          isComplete = true;
-        } else if (status === "failed") {
-          setError(pollError || "Execution failed in the queue");
-          isComplete = true;
-        }
+      if (submitResponse.status === 200 || submitResponse.status === 202) {
+        const results = submitResponse.data?.result?.results || submitResponse.data?.results || [];
+        setTestResult(results);
+      } else {
+        setError("Code execution returned an unexpected status");
       }
 
     } catch (error: any) {
       console.error(error);
-      setError(error?.response?.data?.error || "Something went wrong during execution");
+      setError(error?.response?.data?.error || "Execution failed. Check your syntax.");
     } finally {
       setIsRunning(false);
     }
@@ -178,6 +191,8 @@ function Interview() {
       return
     }
     setLoading(true)
+    handleStopAudio();
+
     try {
       const response = await evaluateInterview({
         round: currentRound,
@@ -196,13 +211,14 @@ function Interview() {
       setEvaluation(result)
       addEvaluation(result)
     } catch (error: any) {
-      setError(error?.response?.data?.error || "Something went wrong")
+      setError(error?.response?.data?.error || "Something went wrong during evaluation")
     } finally {
       setLoading(false)
     }
   }
 
   const handleNext = async () => {
+    handleStopAudio();
     setEvaluation(null)
     setAnswer("")
     setSpokenApproach("")
@@ -224,7 +240,6 @@ function Interview() {
         setCurrentQuestionIndex(0)
       }
     } else if (currentRound === "dsa") {
-      stop();
       navigate("/feedback");
       return;
     }
@@ -236,7 +251,6 @@ function Interview() {
     return "var(--danger)"
   }
 
-  // Render Test Result Verdict Icon
   const renderVerdictIcon = (v: string) => {
     if (v === "AC") return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[var(--success)]"><path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" /></svg>;
     if (v === "WA") return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[var(--danger)]"><path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clipRule="evenodd" /></svg>;
@@ -278,20 +292,20 @@ function Interview() {
               </p>
             )}
 
-            {/* Voice Controls UI */}
+            {/* Voice Controls UI with Cache Support */}
             <div className="flex items-center gap-3 mb-4 h-8">
-              {isLoading ? (
+              {isLoadingAudio ? (
                 <span className="text-xs font-medium text-[var(--text-muted)] flex items-center gap-2">
                   <div className="w-3 h-3 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
                   Loading audio...
                 </span>
               ) : isSpeaking ? (
-                <button onClick={stop} className="text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 bg-[var(--danger)]/10 text-[var(--danger)] border border-[var(--danger)]/20 rounded-md hover:bg-[var(--danger)]/20 transition-colors">
+                <button onClick={handleStopAudio} className="text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 bg-[var(--danger)]/10 text-[var(--danger)] border border-[var(--danger)]/20 rounded-md hover:bg-[var(--danger)]/20 transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5"><path fillRule="evenodd" d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z" clipRule="evenodd" /></svg>
                   Stop Audio
                 </button>
               ) : (
-                <button onClick={() => speak(getCurrentQuestion())} className="text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 rounded-md hover:bg-[var(--accent)]/20 transition-colors">
+                <button onClick={() => handleSpeak(getCurrentQuestion())} className="text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 rounded-md hover:bg-[var(--accent)]/20 transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5"><path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>
                   {evaluation ? "Listen Again" : "Replay Question"}
                 </button>
@@ -366,7 +380,7 @@ function Interview() {
               {/* ACTION BUTTONS (Microphone + Run + Submit) */}
               <div className="flex flex-col gap-3 pt-2">
 
-               {/* Click to Speak Toggle Button */}
+                {/* Click to Speak Toggle Button with Echo Prevention */}
                 <button
                   onClick={handleToggleRecording}
                   disabled={loading || isRunning || isProcessing}
@@ -433,14 +447,15 @@ function Interview() {
                   <h3 className="text-sm font-bold text-[var(--text)] uppercase tracking-wider mb-2">Test Results:</h3>
 
                   {testResult.map((result: any, index: number) => {
-                    const isPassed = result.verdict === "AC";
+                    const isPassed = result.verdict === "AC" || result.passed === true;
                     const getVerdictLabel = (v: string) => {
                       if (v === "AC") return "Accepted";
                       if (v === "WA") return "Wrong Answer";
                       if (v === "TLE") return "Time Limit Exceeded";
                       if (v === "MLE") return "Memory Limit Exceeded";
                       if (v === "RTE") return "Runtime Error";
-                      return "Error";
+                      if (v === "CE") return "Compilation Error";
+                      return isPassed ? "Accepted" : "Failed";
                     };
 
                     return (
@@ -449,9 +464,9 @@ function Interview() {
                         className={`p-4 rounded-xl border ${isPassed ? 'border-[var(--success)]/50 bg-[var(--success)]/10' : 'border-[var(--danger)]/50 bg-[var(--danger)]/10'}`}
                       >
                         <div className="flex items-center gap-2 mb-2">
-                            {renderVerdictIcon(result.verdict)}
+                            {renderVerdictIcon(result.verdict || (isPassed ? "AC" : "WA"))}
                             <p className={`text-sm font-bold ${isPassed ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
-                            Test Case {index + 1}: {getVerdictLabel(result.verdict)}
+                              Test Case {index + 1}: {getVerdictLabel(result.verdict)}
                             </p>
                         </div>
 
