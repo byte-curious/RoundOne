@@ -7,7 +7,6 @@ import {
   useSpring,
   useScroll,
   useTransform,
-  AnimatePresence,
 } from "framer-motion";
 import AnalyticsStats from "../components/AnalyticsStats";
 
@@ -138,27 +137,117 @@ const features = [
 const liveActivity = [
   {
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-4 h-4"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"
+        />
       </svg>
     ),
-    text: "Backend Microservices Migration in Progress",
+    text: "Groq Whisper Voice Engine Active",
   },
   {
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-4 h-4"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z"
+        />
       </svg>
     ),
-    text: "Core Architecture Scaling Upwards",
+    text: "Edge-TTS Text Engine Active",
   },
   {
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-4 h-4"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"
+        />
       </svg>
     ),
-    text: "Sandboxed Runners Temporarily Paused",
+    text: "Dynamic AI Question Generation Live",
+  },
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-4 h-4"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"
+        />
+      </svg>
+    ),
+    text: "Interrogative AI Resume Builder Online",
+  },
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-4 h-4"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5"
+        />
+      </svg>
+    ),
+    text: "FAANG ATS Scoring Updated",
+  },
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-4 h-4"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
+        />
+      </svg>
+    ),
+    text: "Track Your Learning Sheet Progress",
   },
 ];
 
@@ -183,9 +272,6 @@ const testimonials = [
 function Home() {
   const { isAuthenticate } = useUserStore();
   const [isHoveringTestimonial, setIsHoveringTestimonial] = useState(false);
-  
-  // Downtime/Maintenance Modal State
-  const [showMaintenanceModal, setShowMaintenanceModal] = useState(false);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -213,29 +299,6 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-gray-200 font-sans flex flex-col overflow-x-hidden relative selection:bg-purple-500/30">
-      
-      {/* --- INDUSTRIAL INCIDENT / MAINTENANCE BANNER --- */}
-      <div className="bg-amber-500/10 border-b border-amber-500/20 px-4 py-2.5 text-xs md:text-sm text-amber-200 backdrop-blur-md sticky top-0 z-[60] flex items-center justify-between">
-        <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-2 text-center">
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-          </span>
-          <span className="font-semibold text-amber-300 uppercase tracking-wider text-[11px] mr-1">
-            Service Notice:
-          </span>
-          <span>
-            Backend execution clusters are currently undergoing scheduled cloud infrastructure migration. Dynamic AI interviews are in read-only mode.
-          </span>
-          <button
-            onClick={() => setShowMaintenanceModal(true)}
-            className="underline ml-1 font-semibold hover:text-white transition-colors cursor-pointer"
-          >
-            Details
-          </button>
-        </div>
-      </div>
-
       {/* --- SPINNING TESTIMONIAL CURSOR --- */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[100] flex items-center justify-center mix-blend-difference"
@@ -308,7 +371,7 @@ function Home() {
       </div>
 
       {/* CLEAN, MINIMAL LANDING NAVBAR */}
-      <nav className="flex justify-between items-center px-6 py-4 md:px-12 border-b border-white/5 bg-[#050505]/40 backdrop-blur-xl sticky top-[41px] z-50">
+      <nav className="flex justify-between items-center px-6 py-4 md:px-12 border-b border-white/5 bg-[#050505]/40 backdrop-blur-xl sticky top-0 z-50">
         <div className="flex items-center gap-3 cursor-pointer group">
           <img
             src="/logo.svg?v=2"
@@ -335,26 +398,26 @@ function Home() {
           </Link>
 
           {isAuthenticate ? (
-            <button
-              onClick={() => setShowMaintenanceModal(true)}
-              className="px-5 py-2.5 bg-white/10 border border-white/20 text-white rounded-xl text-sm font-bold hover:bg-white/20 transition-all flex items-center gap-2 cursor-pointer"
+            <Link
+              to="/dashboard"
+              className="px-5 py-2.5 bg-white/10 border border-white/20 text-white rounded-xl text-sm font-bold hover:bg-white/20 transition-all flex items-center gap-2"
             >
               Dashboard →
-            </button>
+            </Link>
           ) : (
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => setShowMaintenanceModal(true)}
-                className="text-sm font-medium text-gray-400 hover:text-white transition-colors cursor-pointer"
+              <Link
+                to="/login"
+                className="text-sm font-medium text-gray-400 hover:text-white transition-colors"
               >
                 Log in
-              </button>
-              <button
-                onClick={() => setShowMaintenanceModal(true)}
-                className="px-5 py-2.5 bg-white/10 border border-white/20 text-white rounded-xl text-sm font-bold hover:bg-white/20 transition-all flex items-center gap-2 cursor-pointer"
+              </Link>
+              <Link
+                to="/dashboard"
+                className="px-5 py-2.5 bg-[var(--accent)] text-white rounded-xl text-sm font-bold hover:bg-[var(--accent-hover)] transition-all shadow-[0_0_20px_rgba(170,59,255,0.3)] hover:-translate-y-0.5"
               >
-                Live Preview →
-              </button>
+                Explore as Guest →
+              </Link>
             </div>
           )}
         </div>
@@ -366,12 +429,11 @@ function Home() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-6xl mx-auto px-6 pt-24 pb-16 text-center flex flex-col items-center"
+          className="max-w-6xl mx-auto px-6 pt-32 pb-16 text-center flex flex-col items-center"
         >
-          {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-semibold uppercase tracking-widest backdrop-blur-md shadow-[0_0_20px_rgba(245,158,11,0.15)]">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            Cloud Node Maintenance in Progress
+          <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs font-semibold uppercase tracking-widest backdrop-blur-md shadow-[0_0_20px_rgba(168,85,247,0.15)]">
+            <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+            RoundOne is Live
           </div>
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-8 leading-[1.05]">
@@ -387,29 +449,31 @@ function Home() {
             background.
           </p>
 
-          {/* HERO ACTION BUTTONS: Handled with Modal */}
+          {/* HERO ACTION BUTTONS: Guest Explore + Account */}
           <div className="flex flex-col sm:flex-row gap-4 mb-2">
-            <button
-              onClick={() => setShowMaintenanceModal(true)}
-              className="px-8 py-4 bg-white text-black rounded-xl text-lg font-bold hover:bg-gray-200 transition-all hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.2)] flex items-center justify-center gap-2 group cursor-pointer"
+            <Link
+              to="/dashboard"
+              className="px-8 py-4 bg-white text-black rounded-xl text-lg font-bold hover:bg-gray-200 transition-all hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.2)] flex items-center justify-center gap-2 group"
             >
-              <span>Explore Platform</span>
+              <span>Explore as Guest</span>
               <span className="group-hover:translate-x-1 transition-transform">
                 →
               </span>
-            </button>
-            <a
-              href="#features"
-              className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-xl text-lg font-bold hover:bg-white/10 transition-all hover:scale-105 backdrop-blur-md"
-            >
-              View Feature Set
-            </a>
+            </Link>
+            {!isAuthenticate && (
+              <Link
+                to="/register"
+                className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-xl text-lg font-bold hover:bg-white/10 transition-all hover:scale-105 backdrop-blur-md"
+              >
+                Create Free Account
+              </Link>
+            )}
           </div>
 
           <AnalyticsStats />
         </motion.div>
 
-        {/* 3-STEP MOCK INTERVIEW FLOW PREVIEW */}
+        {/* THE 3-STEP MOCK INTERVIEW FLOW PREVIEW */}
         <div
           ref={targetRef}
           className="max-w-5xl mx-auto px-6 pb-32 pt-12"
@@ -534,7 +598,7 @@ function Home() {
                   key={i}
                   className="text-gray-400 text-sm font-medium tracking-wide flex items-center gap-2"
                 >
-                  <span className="text-amber-400 opacity-80">
+                  <span className="text-purple-400 opacity-80">
                     {activity.icon}
                   </span>
                   {activity.text}
@@ -658,78 +722,18 @@ function Home() {
               Build your resume, track your learning sheets persistently, and
               ace your next technical screen.
             </p>
-            <button
-              onClick={() => setShowMaintenanceModal(true)}
-              className="inline-block px-10 py-5 bg-purple-600 text-white rounded-2xl text-xl font-bold hover:bg-purple-500 transition-all hover:-translate-y-1 shadow-[0_0_40px_rgba(168,85,247,0.5)] hover:shadow-[0_0_60px_rgba(168,85,247,0.7)] cursor-pointer"
+            <Link
+              to="/dashboard"
+              className="inline-block px-10 py-5 bg-purple-600 text-white rounded-2xl text-xl font-bold hover:bg-purple-500 transition-all hover:-translate-y-1 shadow-[0_0_40px_rgba(168,85,247,0.5)] hover:shadow-[0_0_60px_rgba(168,85,247,0.7)]"
             >
-              Explore Live Preview
-            </button>
+              Explore Platform as Guest
+            </Link>
             <div className="mt-8 text-sm text-gray-500 font-medium">
               No credit card required. Free instant access.
             </div>
           </div>
         </section>
       </main>
-
-      {/* --- INDUSTRIAL MAINTENANCE MODAL --- */}
-      <AnimatePresence>
-        {showMaintenanceModal && (
-          <div className="fixed inset-0 z-[120] flex items-center justify-center px-4 bg-black/80 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-[#0e0e10] border border-white/10 rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative"
-            >
-              <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-                  />
-                </svg>
-              </div>
-
-              <h3 className="text-xl font-bold text-white mb-2">
-                Infrastructure Migration in Progress
-              </h3>
-              
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                Our core backend execution node (AI Voice Synthesis & Code Sandbox Runner) is currently undergoing scheduled hardware and cloud infrastructure scaling.
-                <br /><br />
-                User registration and real-time execution environments are temporarily in read-only mode to prevent data desynchronization.
-              </p>
-
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6">
-                <div className="text-xs uppercase font-mono tracking-wider text-gray-400 mb-1">
-                  Status
-                </div>
-                <div className="text-sm font-semibold text-amber-300 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                  Node Relocation & Capacity Scaling
-                </div>
-              </div>
-
-              <div className="flex gap-3 justify-end">
-                <button
-                  onClick={() => setShowMaintenanceModal(false)}
-                  className="px-5 py-2.5 rounded-xl bg-white text-black font-semibold text-sm hover:bg-gray-200 transition-colors cursor-pointer"
-                >
-                  Understood
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       {/* Footer */}
       <footer className="bg-[#050505] pt-16 pb-8 z-10 border-t border-white/5">
