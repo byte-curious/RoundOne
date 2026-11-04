@@ -7,6 +7,7 @@ import {
   useTransform,
 } from "framer-motion";
 import AnalyticsStats from "../components/AnalyticsStats";
+import { useEffect } from "react";
 
 // --- SPOTLIGHT CARD (Mouse-tracking highlight) ---
 function SpotlightCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
@@ -18,7 +19,10 @@ function SpotlightCard({ children, className = "" }: { children: React.ReactNode
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   }
-
+  useEffect(() => {
+    // Silently wake up the backend the moment someone lands on roundoneprep.me
+    fetch("https://api.roundoneprep.me/").catch(() => { });
+  }, []);
   return (
     <div
       onMouseMove={handleMouseMove}
@@ -135,12 +139,12 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-[#070709] text-gray-200 font-sans flex flex-col relative selection:bg-purple-500/30 selection:text-white">
-      
+
       {/* --- AMBIENT SPECULAR BACKGROUND --- */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-25%] left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-gradient-to-b from-purple-600/20 via-indigo-600/10 to-transparent rounded-full blur-[140px]" />
         <div className="absolute top-[50%] right-[-15%] w-[650px] h-[650px] bg-blue-600/10 rounded-full blur-[160px]" />
-        
+
         {/* Soft Grid */}
         <div
           className="absolute inset-0 opacity-[0.12]"
@@ -199,7 +203,7 @@ function Home() {
 
       {/* Main Content with Top Padding for Fixed Nav */}
       <main className="flex-grow z-10 relative pt-24">
-        
+
         {/* --- HERO SECTION --- */}
         <section className="max-w-6xl mx-auto px-6 pt-20 pb-16 text-center flex flex-col items-center">
           {/* Status Badge: RoundOne Live */}
@@ -287,7 +291,7 @@ function Home() {
 
             {/* VISUAL 3-STEP PREVIEWS - WIDE & ROOMY */}
             <div className="p-6 sm:p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 relative">
-              
+
               {/* STEP 1: VISUAL RESUME SCANNER */}
               <div className="p-6 sm:p-7 rounded-2xl bg-white/[0.02] border border-white/[0.08] flex flex-col justify-between hover:border-purple-500/40 hover:bg-white/[0.04] transition-all group">
                 <div>
@@ -562,7 +566,7 @@ function Home() {
       <footer className="bg-[#050507] pt-20 pb-12 border-t border-white/[0.06] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-white/[0.06]">
-            
+
             {/* Brand Column (Left) */}
             <div className="md:col-span-5 flex flex-col justify-between">
               <div>
